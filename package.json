@@ -1,12 +1,11 @@
 {
-  "name": "testNode",
+  "name": "demo",
   "description": "application created by thinkjs",
   "version": "1.0.0",
   "author": "fanilly <iallenaugustine@gmail.com>",
   "scripts": {
     "start": "node development.js",
     "test": "THINK_UNIT_TEST=1 nyc ava test/ && nyc report --reporter=html",
-    "compile": "babel --no-babelrc src/ --presets think-node --out-dir app/",
     "lint": "eslint src/",
     "lint-fix": "eslint --fix src/"
   },
@@ -23,11 +22,6 @@
     "thinkjs": "^3.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-preset-think-node": "^1.0.0",
-    "node-notifier": "^5.0.2",
-    "think-inspect": "0.0.2",
-    "think-babel": "^1.0.3",
     "think-watcher": "^3.0.0",
     "eslint": "^4.2.0",
     "eslint-config-think": "^1.0.0",
@@ -42,14 +36,15 @@
   "readmeFilename": "README.md",
   "thinkjs": {
     "metadata": {
-      "name": "testNode",
+      "name": "demo",
       "description": "application created by thinkjs",
       "author": "fanilly <iallenaugustine@gmail.com>",
-      "babel": true
+      "babel": false,
+      "defaultModule": "admin"
     },
-    "projectName": "testNode",
-    "template": "D:\\jjf\\devtool\\nvm\\nvm\\v8.11.0\\node_modules\\think-cli\\default_template",
+    "projectName": "demo",
+    "template": "D:\\jjf\\devtool\\nvm\\nvm\\v12.10.0\\node_modules\\think-cli\\default_template",
     "clone": false,
-    "isMultiModule": false
+    "isMultiModule": true
   }
 }

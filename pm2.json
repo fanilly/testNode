@@ -1,8 +1,8 @@
 {
   "apps": [{
-    "name": "testNode",
+    "name": "demo",
     "script": "production.js",
-    "cwd": "D:\jjf\nodeStudy\testNode",
+    "cwd": "D:\jjf\nodeStudy\demo",
     "exec_mode": "fork",
     "max_memory_restart": "1G",
     "autorestart": true,
