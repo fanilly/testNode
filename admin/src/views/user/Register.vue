@@ -55,13 +55,6 @@
           </a-select>
         </a-input>
       </a-form-item>
-      <!--<a-input-group size="large" compact>
-            <a-select style="width: 20%" size="large" defaultValue="+86">
-              <a-select-option value="+86">+86</a-select-option>
-              <a-select-option value="+87">+87</a-select-option>
-            </a-select>
-            <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
-          </a-input-group>-->
 
       <a-row :gutter="16">
         <a-col class="gutter-row" :span="16">
@@ -100,7 +93,7 @@
 
 <script>
 import { mixinDevice } from '@/utils/mixin.js'
-import { getSmsCaptcha } from '@/api/login'
+import { getSmsCaptcha, register } from '@/api/login'
 
 const levelNames = {
   0: '低',
@@ -215,7 +208,16 @@ export default {
       validateFields({ force: true }, (err, values) => {
         if (!err) {
           state.passwordLevelChecked = false
-          $router.push({ name: 'registerResult', params: { ...values } })
+          register(values).then(res => {
+            if(res.code == 1){
+              this.$message.success(res.msg)
+              $router.push({ name: 'registerResult', params: { ...values } })
+            }else{
+              this.$message.error(res.msg)
+            }
+          }).catch(err => {
+            console.log(err)
+          })
         }
       })
     },

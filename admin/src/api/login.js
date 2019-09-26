@@ -1,20 +1,17 @@
 import api from './index'
 import { axios } from '@/utils/request'
 
-/**
- * login func
- * parameter: {
- *     username: '',
- *     password: '',
- *     remember_me: true,
- *     captcha: '12345'
- * }
- * @param parameter
- * @returns {*}
- */
 export function login (parameter) {
   return axios({
-    url: '/auth/login',
+    url: api.login,
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function register (parameter) {
+  return axios({
+    url: api.register,
     method: 'post',
     data: parameter
   })

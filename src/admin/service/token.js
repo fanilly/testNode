@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const secret = 'SLDLKKDS323ssdd@#@@gf';
+const secret = 'JJFSLDLKKDS323ssdd@#@@gf';
 
 module.exports = class extends think.Service {
   async getUserId(token) {
@@ -9,11 +9,11 @@ module.exports = class extends think.Service {
 
     const result = await this.parse(token);
     console.log(result)
-    if (think.isEmpty(result) || result.user_id <= 0) {
+    if (think.isEmpty(result) || result.id <= 0) {
       return 0;
     }
 
-    return result.user_id;
+    return result.id;
   }
 
   async create(userInfo) {

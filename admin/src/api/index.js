@@ -1,12 +1,12 @@
 const api = {
-  Login: '/auth/login',
-  Logout: '/auth/logout',
-  ForgePassword: '/auth/forge-password',
-  Register: '/auth/register',
-  twoStepCode: '/auth/2step-code',
-  SendSms: '/account/sms',
-  SendSmsErr: '/account/sms_err',
+  login: '/admin/auth/login',
+  register: '/admin/auth/register',
+  logout: '/admin/auth/logout',
+  forgetPassword: '/admin/auth/forge-password',
+  twoStepCode: '/admin/auth/2step-code',
+  sendSms: '/admin/account/sms',
+  sendSmsErr: '/admin/account/sms_err',
   // get my info
-  UserInfo: '/user/info'
+  UserInfo: '/admin/user/info'
 }
 export default api

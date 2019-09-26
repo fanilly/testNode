@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
+    "koa-cors": "^0.0.16",
     "md5": "^2.2.1",
+    "moment": "^2.24.0",
     "think-cache": "^1.0.0",
     "think-cache-file": "^1.0.8",
     "think-logger3": "^1.0.0",

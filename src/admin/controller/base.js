@@ -1,5 +1,7 @@
+const moment = require('moment')
 module.exports = class extends think.Controller {
   async __before() {
+
     // 根据token值获取用户id
     this.ctx.state.token = this.ctx.header['x-access-token'] || ''
     const tokenSerivce = think.service('token', 'admin')
@@ -19,5 +21,9 @@ module.exports = class extends think.Controller {
       msg,
       code: this.config('API_SUCCESS_CODE')
     })
+  }
+
+  getTime(){
+    return moment(Date.now()).format('YYYY-MM-DD hh:mm:ss')
   }
 }
