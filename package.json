@@ -10,6 +10,7 @@
     "lint-fix": "eslint --fix src/"
   },
   "dependencies": {
+    "gm": "^1.23.1",
     "jsonwebtoken": "^8.5.1",
     "koa-cors": "^0.0.16",
     "lodash": "^4.17.15",
