@@ -6,7 +6,7 @@ import NProgress from 'nprogress' // progress bar
 import '@/components/NProgress/nprogress.less' // progress bar custom style
 import notification from 'ant-design-vue/es/notification'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, LB_LOGIN_USERINFO } from '@/store/mutation-types'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -16,7 +16,7 @@ const defaultRoutePath = '/dashboard/workplace'
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
-  if (Vue.ls.get(ACCESS_TOKEN)) {
+  if (Vue.ls.get(ACCESS_TOKEN) && Vue.ls.get(LB_LOGIN_USERINFO)) {
     /* has token */
     if (to.path === '/user/login') {
       next({ path: defaultRoutePath })

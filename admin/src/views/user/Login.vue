@@ -7,187 +7,166 @@
       :form="form"
       @submit="handleSubmit"
     >
-      <a-tabs
-        :activeKey="customActiveKey"
-        :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
-        @change="handleTabClick"
-      >
-        <a-tab-pane key="tab1" tab="账号密码登录">
-          <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" message="账户或密码错误" />
-          <a-form-item>
-            <a-input
-              size="large"
-              type="text"
-              placeholder="账户: admin"
-              v-decorator="[
-                'userName',
-                {rules: [{ required: true, message: '请输入邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
-              ]"
-            >
-              <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-            </a-input>
-          </a-form-item>
+      <a-row align="middle" justify="center" type="flex">
+        <!-- <a-col :md="12" :span="0" class="lside">
+          <img src="~@/assets/login/illustration.png">
+        </a-col> -->
+        <a-col :sm="24" :xs="24" :md="24" class="rside">
+          <h1>账号登录</h1>
+          <img v-if="!showPasswordLogin" class="qrcode" :src="$store.state.app.imgBaseUrl + loginQRcode">
+          <div v-if="showPasswordLogin">
+            <a-form-item class="form-item">
+              <a-input
+                size="large"
+                type="text"
+                placeholder="请输入用户名"
+                v-decorator="[
+                  'username',
+                  {rules: [{ required: true, message: '请输入用户名' }], validateTrigger: 'change'}
+                ]"
+              >
+              </a-input>
+            </a-form-item>
 
-          <a-form-item>
-            <a-input
-              size="large"
-              type="password"
-              autocomplete="false"
-              placeholder="密码: admin or ant.design"
-              v-decorator="[
-                'password',
-                {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
-              ]"
-            >
-              <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-            </a-input>
-          </a-form-item>
-        </a-tab-pane>
-        <a-tab-pane key="tab2" tab="手机号登录">
-          <a-form-item>
-            <a-input size="large" type="text" placeholder="手机号" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]">
-              <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-            </a-input>
-          </a-form-item>
+            <a-form-item class="form-item">
+              <a-input
+                size="large"
+                type="password"
+                autocomplete="false"
+                placeholder="请输入密码"
+                v-decorator="[
+                  'password',
+                  {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
+                ]"
+              >
+              </a-input>
+            </a-form-item>
 
-          <a-row :gutter="16">
-            <a-col class="gutter-row" :span="16">
-              <a-form-item>
-                <a-input size="large" type="text" placeholder="验证码" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
-                  <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                </a-input>
-              </a-form-item>
-            </a-col>
-            <a-col class="gutter-row" :span="8">
+            <a-form-item style="margin-top:24px">
               <a-button
-                class="getCaptcha"
-                tabindex="-1"
-                :disabled="state.smsSendBtn"
-                @click.stop.prevent="getCaptcha"
-                v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
-              ></a-button>
-            </a-col>
-          </a-row>
-        </a-tab-pane>
-      </a-tabs>
-
-      <a-form-item>
-        <a-checkbox v-decorator="['rememberMe']">自动登录</a-checkbox>
-        <router-link
-          :to="{ name: 'recover', params: { user: 'aaa'} }"
-          class="forge-password"
-          style="float: right;"
-        >忘记密码</router-link>
-      </a-form-item>
-
-      <a-form-item style="margin-top:24px">
-        <a-button
-          size="large"
-          type="primary"
-          htmlType="submit"
-          class="login-button"
-          :loading="state.loginBtn"
-          :disabled="state.loginBtn"
-        >确定</a-button>
-      </a-form-item>
-
-      <div class="user-login-other">
-        <span>其他登录方式</span>
-        <a>
-          <a-icon class="item-icon" type="alipay-circle"></a-icon>
-        </a>
-        <a>
-          <a-icon class="item-icon" type="taobao-circle"></a-icon>
-        </a>
-        <a>
-          <a-icon class="item-icon" type="weibo-circle"></a-icon>
-        </a>
-        <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
-      </div>
+                size="large"
+                type="primary"
+                htmlType="submit"
+                class="login-button"
+                :loading="state.loginBtn"
+                :disabled="state.loginBtn"
+              >确定</a-button>
+            </a-form-item>
+          </div>
+        </a-col>
+      </a-row>
     </a-form>
 
-    <two-step-captcha
-      v-if="requiredTwoStepCaptcha"
-      :visible="stepCaptchaVisible"
-      @success="stepCaptchaSuccess"
-      @cancel="stepCaptchaCancel"
-    ></two-step-captcha>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import md5 from 'md5'
-import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import { getSmsCaptcha, get2step } from '@/api/login'
+import { ACCESS_TOKEN, LB_LOGIN_USERINFO, LB_UUID } from '@/store/mutation-types'
 
 export default {
-  components: {
-    TwoStepCaptcha
-  },
   data () {
     return {
-      customActiveKey: 'tab1',
+      uuid: '',
+      showPasswordLogin: false,
       loginBtn: false,
-      // login type: 0 email, 1 username, 2 telephone
-      loginType: 0,
-      isLoginError: false,
-      requiredTwoStepCaptcha: false,
+      loginQRcode: '',
       stepCaptchaVisible: false,
       form: this.$form.createForm(this),
       state: {
         time: 60,
         loginBtn: false,
-        // login type: 0 email, 1 username, 2 telephone
-        loginType: 0,
         smsSendBtn: false
       }
     }
   },
-  created () {
-    get2step({ })
-      .then(res => {
-        this.requiredTwoStepCaptcha = res.result.stepCode
-      })
-      .catch(() => {
-        this.requiredTwoStepCaptcha = false
-      })
-    // this.requiredTwoStepCaptcha = true
+  mounted(){
+    this.getQRCode()
   },
   methods: {
-    ...mapActions(['Login', 'Logout']),
-    // handler
-    handleUsernameOrEmail (rule, value, callback) {
-      const { state } = this
-      const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
-      if (regex.test(value)) {
-        state.loginType = 0
-      } else {
-        state.loginType = 1
-      }
-      callback()
+    ...mapActions(['Login']),
+    getQRCode(){
+      // let url = 'https://api.liaobe.cn/authlg/gqrc', 1, “data=%7B%7D&ver=” ＋ #常量_版本号 ＋ “&uuid=” ＋ 账号信息.uuid ＋ “&uid=-1”, , , , )
+      /*var formData = new FormData();
+      formData.append("uid", -1);
+      formData.append("data", {dv:3});
+      formData.append("ver", '1.5.0.0');
+      formData.append("uuid", uuid());
+      formData.append("dv", 3);
+      formData.append("pkgn", 'liaobei');
+      formData.append("cpt", 0);
+      formData.append("cid", '');
+      formData.append("evs", '');*/
+      this.uuid = this.$utils.uuid();
+      Vue.ls.set(LB_UUID, this.uuid)
+      var formData = new FormData();
+      formData.append("uid", -1);
+      formData.append("data", JSON.stringify({}));
+      formData.append("ver", this.$store.state.app.version);
+      formData.append("uuid", this.uuid);
+
+      this.$api.login(formData).then(res => {
+        console.log(res)
+        this.loginQRcode = res.data.img;
+        this.getQRCodeCallback();
+      }).catch(err => {
+        console.log(err)
+      })
     },
-    handleTabClick (key) {
-      this.customActiveKey = key
-      // this.form.resetFields()
+    getQRCodeCallback(){
+      // “https://api.liaobe.cn/authlg/lwqrc”, 1, “data=%7B%22os%22%3A%22Windows%207%20(x64)%22%2C%22di%22%3A%22Chrome%E6%B5%8F%E8%A7%88%E5%99%A8%22%2C%22dv%22%3A3%2C%22tp%22%3A” ＋ tp ＋ “%7D&ver=” ＋ #常量_版本号 ＋ “&uuid=” ＋ 账号信息.uuid ＋ “&uid=-1”, ,
+      // {"os":"Windows 10","di":"Chromium浏览器","dv":3,"tp":2}
+      //formData.append("data", '%7B%22os%22%3A%22Windows%207%20(x64)%22%2C%22di%22%3A%22Chrome%E6%B5%8F%E8%A7%88%E5%99%A8%22%2C%22dv%22%3A3%2C%22tp%22%3A' + 1 + '%7D');
+      let timer = setInterval( async ()=> {
+        var formData = new FormData();
+        formData.append('uid', -1);
+        formData.append('data', JSON.stringify({ os: "Windows 10", di: "Chromium浏览器", dv: 3, tp: 2 }));
+        formData.append('ver', this.$store.state.app.version);
+        formData.append('uuid', this.uuid);
+
+        let res = await this.$api.loginCallback(formData)
+
+        switch (res.r) {
+          case 2101:
+            // 登录失败 此时等待用户继续登录
+            break;
+          case 2102:
+            // 二维码过期 此时应判断是否是登录成功 如果不是需点击刷新二维码重新登录
+            break;
+          case 0:
+            // 登录成功 清除定时器跳转到登录成功页面
+            Vue.ls.set(LB_LOGIN_USERINFO, res, 7 * 24 * 60 * 60 * 1000)
+            Vue.ls.set(ACCESS_TOKEN, this.$utils.uuid(), 7 * 24 * 60 * 60 * 1000)
+            clearInterval(timer)
+            this.loginSuccess({code: 200, data: {}})
+            break;
+          default:
+            // statements_def
+            break;
+        }
+      }, 5000)
+
     },
     handleSubmit (e) {
       e.preventDefault()
       const {
         form: { validateFields },
         state,
-        customActiveKey,
         Login
       } = this
 
       state.loginBtn = true
 
-      const validateFieldsKey = customActiveKey === 'tab1' ? ['userName', 'password'] : ['mobile', 'captcha']
+      const validateFieldsKey = ['username', 'password'];
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
+          console.log('login form', values)
           const loginParams = { ...values }
+          loginParams.password = values.password
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
@@ -201,53 +180,18 @@ export default {
         }
       })
     },
-    getCaptcha (e) {
-      e.preventDefault()
-      const { form: { validateFields }, state } = this
-
-      validateFields(['mobile'], { force: true }, (err, values) => {
-        if (!err) {
-          state.smsSendBtn = true
-
-          const interval = window.setInterval(() => {
-            if (state.time-- <= 0) {
-              state.time = 60
-              state.smsSendBtn = false
-              window.clearInterval(interval)
-            }
-          }, 1000)
-
-          const hide = this.$message.loading('验证码发送中..', 0)
-          getSmsCaptcha({ mobile: values.mobile }).then(res => {
-            setTimeout(hide, 2500)
-            this.$notification['success']({
-              message: '提示',
-              description: '验证码获取成功，您的验证码为：' + res.result.captcha,
-              duration: 8
-            })
-          }).catch(err => {
-            setTimeout(hide, 1)
-            clearInterval(interval)
-            state.time = 60
-            state.smsSendBtn = false
-            this.requestFailed(err)
-          })
-        }
-      })
-    },
-    stepCaptchaSuccess () {
-      this.loginSuccess()
-    },
-    stepCaptchaCancel () {
-      this.Logout().then(() => {
-        this.loginBtn = false
-        this.stepCaptchaVisible = false
-      })
-    },
     loginSuccess (res) {
       console.log(res)
-      if(res.code == 1){
-        this.$router.push({ path: '/' })
+      if(res.code == '200' && res.data){
+        // if(!res.data.permission){
+        //   this.$notification.warning({
+        //     message: '警告',
+        //     description: `当前登录用户无权限访问当前系统，请联系管理员`
+        //   })
+        //   return false;
+        // }
+        console.log(6666666)
+        this.$router.push({ name: 'dashboard' })
         // 延迟 1 秒显示欢迎信息
         setTimeout(() => {
           this.$notification.success({
@@ -255,19 +199,15 @@ export default {
             description: `${timeFix()}，欢迎回来`
           })
         }, 1000)
-        this.isLoginError = false
-      } else {
-        this.isLoginError = true
-        this.$notification['error']({
-          message: '登录失败',
-          description: res.msg,
-          duration: 3
+      }else{
+        this.$notification.error({
+          message: res.code,
+          description: res.msg
         })
       }
     },
     requestFailed (err) {
-      console.log('---------------')
-      this.isLoginError = true
+      console.log(err)
       this.$notification['error']({
         message: '错误',
         description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
@@ -279,9 +219,40 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.form-item /deep/ .ant-input {
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+.main /deep/ .ant-btn-primary {
+    border-radius: 20px;
+}
+.main {
+  padding-top: 120px;
+  user-select: none;
+  h1 {
+    color: #419DFF;
+    font-size: 26px;
+    text-align: center;
+    padding: 20px;
+  }
+  .lside {
+    max-width: 100%;
+  }
+  .rside {
+    padding: 0 50px;
+  }
+}
 .user-layout-login {
+  padding: 10px 70px;
+  height: 358px;
   label {
     font-size: 14px;
+  }
+
+  .qrcode {
+    max-width: 260px;
+    display: block;
+    margin: auto;
   }
 
   .getCaptcha {

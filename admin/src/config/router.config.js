@@ -11,6 +11,24 @@ export const asyncRouterMap = [
     meta: { title: '首页' },
     redirect: '/dashboard/workplace',
     children: [
+      {
+        path: '/page_index',
+        name: 'pageIndex',
+        component: PageView,
+        meta: { title: '赔率设置', icon: 'pay-circle', permission: ['dashboard'] },
+        redirect: '/page_index/index',
+        children: [{
+            path: '/page_index/index',
+            name: 'pageIndexIndex',
+            component: () => import('@/views/page_index/index/index'),
+            meta: {
+              title: '赔率设置',
+              keepAlive: true,
+              permission: ['dashboard']
+            }
+          }
+        ]
+      },
       // dashboard
       {
         path: '/dashboard',

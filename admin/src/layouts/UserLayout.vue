@@ -1,28 +1,22 @@
 <template>
   <div id="userLayout" :class="['user-layout-wrapper', device]">
     <div class="container">
-      <div class="top">
+      <!-- <div class="top">
         <div class="header">
           <a href="/">
-            <img src="~@/assets/logo.svg" class="logo" alt="logo">
-            <span class="title">Ant Design</span>
+            <span class="title">鸿蒙</span>
           </a>
         </div>
         <div class="desc">
-          Ant Design 是西湖区最具影响力的 Web 设计规范
+
         </div>
-      </div>
+      </div> -->
 
       <route-view></route-view>
 
       <div class="footer">
-        <div class="links">
-          <a href="_self">帮助</a>
-          <a href="_self">隐私</a>
-          <a href="_self">条款</a>
-        </div>
         <div class="copyright">
-          Copyright &copy; 2018 白鹭学园技术组出品
+          Copyright &copy; 2019 All Rights Reserved
         </div>
       </div>
     </div>
@@ -56,7 +50,7 @@ export default {
     &.mobile {
       .container {
         .main {
-          max-width: 368px;
+          max-width: 768px;
           width: 98%;
         }
       }
@@ -65,10 +59,20 @@ export default {
     .container {
       width: 100%;
       min-height: 100%;
-      background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
+      background: #3886F0 url(~@/assets/background.svg) no-repeat 50%;
       background-size: 100%;
       padding: 110px 0 144px;
       position: relative;
+
+      .logo {
+        vertical-align: top;
+        margin-right: 16px;
+        border-style: none;
+        position: absolute;
+        left: 100px;
+        top: 30px;
+        width: 200px;
+      }
 
       a {
         text-decoration: none;
@@ -91,16 +95,9 @@ export default {
             opacity: 0.8;
           }
 
-          .logo {
-            height: 44px;
-            vertical-align: top;
-            margin-right: 16px;
-            border-style: none;
-          }
-
           .title {
             font-size: 33px;
-            color: rgba(0, 0, 0, .85);
+            color: #fff;
             font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
             font-weight: 600;
             position: relative;
@@ -109,16 +106,17 @@ export default {
         }
         .desc {
           font-size: 14px;
-          color: rgba(0, 0, 0, 0.45);
           margin-top: 12px;
           margin-bottom: 40px;
         }
       }
 
       .main {
-        min-width: 260px;
-        width: 368px;
+        min-height: 600px;
+        max-width: 760px;
         margin: 0 auto;
+        border-radius: 12px;
+        background: #fff url(~@/assets/login/bg01.png) no-repeat right top;
       }
 
       .footer {

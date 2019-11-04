@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { login, getInfo, logout } from '@/api/login'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, LB_LOGIN_USERINFO, LB_UUID } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
 const user = {
@@ -10,7 +10,8 @@ const user = {
     welcome: '',
     avatar: '',
     roles: [],
-    info: {}
+    info: {},
+    uuid: ''
   },
 
   mutations: {
@@ -29,6 +30,9 @@ const user = {
     },
     SET_INFO: (state, info) => {
       state.info = info
+    },
+    SET_UUID: (state, uuid) => {
+      state.uuid = uuid
     }
   },
 
@@ -53,6 +57,8 @@ const user = {
     // 获取用户信息
     GetInfo ({ commit,state }) {
       return new Promise((resolve) => {
+        commit('SET_INFO', Vue.ls.get(LB_LOGIN_USERINFO))
+        commit('SET_UUID', Vue.ls.get(LB_UUID))
         const tempPermission = ['dashboard', 'form', 'table', 'profile', 'result', 'exception', 'user', 'support'];
         commit('SET_ROLES', tempPermission)
         resolve(tempPermission);

@@ -6,6 +6,16 @@ import App from './App.vue'
 import router from './router'
 import store from './store/'
 import { VueAxios } from './utils/request'
+import Requests from './api/index.js'
+import { ACCESS_TOKEN, LB_LOGIN_USERINFO } from '@/store/mutation-types'
+
+Vue.prototype.$api = Requests
+Vue.prototype.$utils = {
+  uuid() {
+    const S4 = () => ((((1+Math.random())*0x10000)|0).toString(16).substring(1))
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  }
+}
 
 // mock
 import './mock'

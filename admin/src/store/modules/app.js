@@ -24,7 +24,9 @@ const app = {
     autoHideHeader: false,
     color: null,
     weak: false,
-    multiTab: true
+    multiTab: true,
+    imgBaseUrl: 'https://r.lbpic.cn',
+    version: '1.3.0.0'
   },
   mutations: {
     SET_SIDEBAR_TYPE: (state, type) => {
